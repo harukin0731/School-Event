@@ -16,88 +16,9 @@ import java.net.*;
 import java.io.*;
 import javax.swing.*;
 import java.util.logging.*;
-class TopScreen extends GUIConfig{
-    
-    JPanel  panel  = new JPanel(),
-            panel2 = new JPanel();
-    
-    JButton StartButton = new JButton("はじめる→"),
-            AboutButton = new JButton("このソフトウェアについて"),
-            NextButton  = new JButton("次へ");
-    
-    JLabel  text  = new JLabel("情報電子科三年生制作画像加工ソフトウェア",JLabel.CENTER),
-            label = new JLabel("右のボタンを押して撮影を開始してください。");
-    
-    Image   img;
-    
-    public TopScreen()throws IOException{
-        addWindowListener(this);
-        setTitle("(´・ω・｀) by 情報電子科3年生！！");
-        setLocation(0,0);
-	setSize(1200,720);
-        setVisible(true);
-        add(panel,"South");
-        AboutButton.addActionListener(this);
-        StartButton.addActionListener(this);
-        panel.setBackground(Color.white);
-        panel.add(AboutButton);
-        panel.add(label);
-        add(text);
-        panel.add(StartButton);
-        panel.add(NextButton);
-    } 
-    
-    void test(){
-        remove(text);
-        panel.remove(StartButton);
-        remove(panel);
-        add(panel2,"North");
-        panel2.add(NextButton);
-    }
-    
-    ///オーバーライドぉぉ
-    public void actionPerformed(ActionEvent arg0){
-        if(arg0.getSource() == AboutButton){
-            System.out.println("＼(^o^)／");
-            new このソフトウェアについて();      
-        }
-        
-        if(arg0.getSource() == StartButton){
-            System.out.println("＼(^o^)／");
-            test();
-        }
-    }
-}
 
-class このソフトウェアについて extends GUIConfig{
-    JPanel      Close = new JPanel();
-    
-    JButton     close = new JButton("閉じる");
-    
-    JTextArea   text = new JTextArea(""
-                + "制作：情報電子科三年生　向井晴紀\n"
-                + "使用ソフト：NetBeansIDE for Linux\n"
-                + "このプログラムはMITライセンスの元で制作されているわけではありません。"
-                ,20,20); 
-    
-    public このソフトウェアについて(){
-        addWindowListener(this);
-        close.addActionListener(this);
-        setTitle("このソフトウェアについて");
-        setLocation(300,300);
-	setSize(600,300);
-        setVisible(true);
-        add(text);
-        add(Close,"South");
-        Close.add(close);
-    }
-    ///オーバーライドぉぉ
-    public void actionPerformed(ActionEvent arg0){
-        if(arg0.getSource()==close){
-            dispose();
-        }
-    }
-}
+
+
 
 class おえかき画面 extends GUIConfig{
     JPanel  panel1 = new JPanel(),
