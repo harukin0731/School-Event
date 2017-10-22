@@ -14,16 +14,22 @@ import java.awt.event.*;
 import java.awt.Window.*;
 import java.net.*;
 import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.*;
+import java.util.logging.*;
 class TopScreen extends GUIConfig{
-    Panel  panel=new Panel();
-    Button StartButton=new Button("はじめる→"),
-           AboutButton=new Button("このソフトウェアについて"),
-           NextButton=new Button("次へ");
-    Label  text=new Label("情報電子科三年生制作画像加工ソフトウェア",Label.CENTER),
-           label=new Label("右のボタンを押して撮影を開始してください。");
-    Image  img;
+    
+    JPanel  panel  = new JPanel(),
+            panel2 = new JPanel();
+    
+    JButton StartButton = new JButton("はじめる→"),
+            AboutButton = new JButton("このソフトウェアについて"),
+            NextButton  = new JButton("次へ");
+    
+    JLabel  text  = new JLabel("情報電子科三年生制作画像加工ソフトウェア",JLabel.CENTER),
+            label = new JLabel("右のボタンを押して撮影を開始してください。");
+    
+    Image   img;
+    
     public TopScreen()throws IOException{
         addWindowListener(this);
         setTitle("(´・ω・｀) by 情報電子科3年生！！");
@@ -31,27 +37,32 @@ class TopScreen extends GUIConfig{
 	setSize(1200,720);
         setVisible(true);
         add(panel,"South");
-        StartButton.addActionListener(this);
         AboutButton.addActionListener(this);
+        StartButton.addActionListener(this);
         panel.setBackground(Color.white);
         panel.add(AboutButton);
         panel.add(label);
         add(text);
         panel.add(StartButton);
+        panel.add(NextButton);
     } 
-    public void test(){
+    
+    void test(){
         remove(text);
         panel.remove(StartButton);
-        add(panel,"North");
-        panel.add(NextButton);
+        remove(panel);
+        add(panel2,"North");
+        panel2.add(NextButton);
     }
+    
     ///オーバーライドぉぉ
     public void actionPerformed(ActionEvent arg0){
-        if(arg0.getSource()==AboutButton){
+        if(arg0.getSource() == AboutButton){
             System.out.println("＼(^o^)／");
             new このソフトウェアについて();      
         }
-        if(arg0.getSource()==StartButton){
+        
+        if(arg0.getSource() == StartButton){
             System.out.println("＼(^o^)／");
             test();
         }
@@ -59,13 +70,16 @@ class TopScreen extends GUIConfig{
 }
 
 class このソフトウェアについて extends GUIConfig{
-    private Panel Close=new Panel();
-    private Button close=new Button("閉じる");
-    private TextArea text=new TextArea(""
-            + "制作：情報電子科三年生　向井晴紀\n"
-            + "使用ソフト：NetBeansIDE for Linux\n"
-            + "このプログラムはMITライセンスの元で制作されているわけではありません。"
-            ,20,20); 
+    JPanel      Close = new JPanel();
+    
+    JButton     close = new JButton("閉じる");
+    
+    JTextArea   text = new JTextArea(""
+                + "制作：情報電子科三年生　向井晴紀\n"
+                + "使用ソフト：NetBeansIDE for Linux\n"
+                + "このプログラムはMITライセンスの元で制作されているわけではありません。"
+                ,20,20); 
+    
     public このソフトウェアについて(){
         addWindowListener(this);
         close.addActionListener(this);
@@ -84,8 +98,12 @@ class このソフトウェアについて extends GUIConfig{
         }
     }
 }
+
 class おえかき画面 extends GUIConfig{
-    private Panel panel1=new Panel(),panel2=new Panel(),panel3=new Panel(),panel4=new Panel();
+    JPanel  panel1 = new JPanel(),
+            panel2 = new JPanel(),
+            panel3 = new JPanel(),
+            panel4 = new JPanel();
     public おえかき画面(){
         addWindowListener(this);
         setTitle("おえかき");
@@ -94,7 +112,7 @@ class おえかき画面 extends GUIConfig{
         setVisible(true);
     }
 }
-class GUIConfig extends Frame implements WindowListener,ActionListener {
+class GUIConfig extends JFrame implements WindowListener,ActionListener {
     public void windowClosing(WindowEvent arg0) {dispose();}
     public void windowActivated(WindowEvent arg0){}
     public void windowClosed(WindowEvent arg0){}
