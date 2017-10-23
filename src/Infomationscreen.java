@@ -15,10 +15,14 @@ import java.net.*;
 import java.io.*;
 import javax.swing.*;
 import java.util.logging.*;
-class このソフトウェアについて extends GUIConfig{
+class Informationscreen extends GUIConfig{
     JPanel      Close = new JPanel();
     
     JButton     close = new JButton("閉じる");
+    
+    JLabel label = new JLabel();
+    
+    ImageIcon icon = new ImageIcon("./Logo-face.png");
     
     JTextArea   text = new JTextArea(""
                 + "制作：情報電子科三年生　向井晴紀\n"
@@ -26,9 +30,10 @@ class このソフトウェアについて extends GUIConfig{
                 + "このプログラムはMITライセンスの元で制作されているわけではありません。"
                 ,20,20); 
     
-    public このソフトウェアについて(){
+    public Informationscreen(){
         addWindowListener(this);
         close.addActionListener(this);
+        label.setIcon(icon);
         setTitle("このソフトウェアについて");
         setLocation(300,300);
 	setSize(600,300);
@@ -36,6 +41,7 @@ class このソフトウェアについて extends GUIConfig{
         add(text);
         add(Close,"South");
         Close.add(close);
+        //Close.add(label);
     }
     ///オーバーライドぉぉ
     public void actionPerformed(ActionEvent arg0){
