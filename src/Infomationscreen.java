@@ -8,6 +8,7 @@
  *
  * @author harukin
  */
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Window.*;
@@ -20,18 +21,19 @@ class Informationscreen extends GUIConfig{
     
     JButton     close = new JButton("閉じる");
     
-    JLabel label = new JLabel();
+    JLabel      label = new JLabel();
     
-    ImageIcon icon = new ImageIcon("./Logo-face.png");
+    ImageIcon   icon  = new ImageIcon("./Logo-BK-small.png");
     
     JTextArea   text = new JTextArea(""
-                + "制作：情報電子科三年生　向井晴紀\n"
+                + "プログラム制作：情報電子科三年生　向井晴紀\n"
                 + "使用ソフト：NetBeansIDE for Linux\n"
                 + "このプログラムはMITライセンスの元で制作されているわけではありません。"
                 ,20,20); 
     
     public Informationscreen(){
         addWindowListener(this);
+        setLayout(new BorderLayout());
         close.addActionListener(this);
         label.setIcon(icon);
         setTitle("このソフトウェアについて");
@@ -39,9 +41,9 @@ class Informationscreen extends GUIConfig{
 	setSize(600,300);
         setVisible(true);
         add(text);
+        add(label,"North");
         add(Close,"South");
         Close.add(close);
-        //Close.add(label);
     }
     ///オーバーライドぉぉ
     public void actionPerformed(ActionEvent arg0){
