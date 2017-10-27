@@ -16,6 +16,13 @@ import java.net.*;
 import java.io.*;
 import javax.swing.*;
 import java.util.logging.*;
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 
@@ -33,7 +40,7 @@ class おえかき画面 extends GUIConfig{
         setVisible(true);
     }
 }
-class GUIConfig extends JFrame implements WindowListener,ActionListener {
+class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeListener {
     public void windowClosing(WindowEvent arg0) {dispose();}
     public void windowActivated(WindowEvent arg0){}
     public void windowClosed(WindowEvent arg0){}
@@ -42,6 +49,7 @@ class GUIConfig extends JFrame implements WindowListener,ActionListener {
     public void windowIconified(WindowEvent arg0){}
     public void windowOpened(WindowEvent arg0){}
     public void actionPerformed(ActionEvent arg0){}
+    public void stateChanged(ChangeEvent e) {}
 }
 
 

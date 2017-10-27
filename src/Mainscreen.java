@@ -8,6 +8,15 @@ import javax.swing.*;
 import java.awt.image.*;
 import javax.imageio.*;
 
+//お絵かき
+import java.awt.geom.Line2D;
+import java.awt.image.BufferedImage;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,9 +29,12 @@ import javax.imageio.*;
  * @author harukin
  */
 
-class TopScreen extends GUIConfig{
+class TopScreen extends GUIConfig {
+    
+    boolean debug=true;
     
     JTabbedPane tabbedpane = new JTabbedPane();
+    Color color;
     //一段階目のGUI
     JPanel    first  = new JPanel(),
               first2 = new JPanel(),
@@ -60,29 +72,26 @@ class TopScreen extends GUIConfig{
     JButton   NextButton3 = new JButton("次へ"),
               BackButton3 = new JButton("戻る");
     
-    //Webcam webcam = Webcam.getDefault();
+    WebcamPanel webpanel;
+    Webcam webcam = Webcam.getDefault();
+    boolean flag;
     
     //四段階目のGUI
-    JPanel forth = new JPanel(),
-           forth2_1 = new JPanel(),
-           forth2_2 = new JPanel();
+    JPanel  forth    = new JPanel(),
+            forth2_1 = new JPanel(),
+            forth2_2 = new JPanel(),
+            Drawing_right = new JPanel(),
+            Drawing_left  = new JPanel(),
+            Drawing_down  = new JPanel();
     
-    JLabel    Announcetext4  = new JLabel("お絵かきをします。"),
-              forthlabel    = new JLabel();
+    JLabel  Announcetext4  = new JLabel("お絵かきをします。"),
+            forthlabel     = new JLabel();
     
-    JButton   NextButton4 = new JButton("次へ"),
-              BackButton4 = new JButton("戻る");
-    try{
-        Webcam webcam = Webcam.getDefault();
-    }catch(Exception e){
-        System.out.println("失敗");
-}
-
+    JButton NextButton4 = new JButton("次へ"),
+            BackButton4 = new JButton("戻る");
     
-        WebcamPanel webpanel = new WebcamPanel(webcam);
-
-    //WebcamViewer cam = new WebcamViewer();
-    
+    JColorChooser CTool = new JColorChooser();
+   
     //五段階目のGUI
     JPanel fifth = new JPanel(),
            fifth2_1 = new JPanel(),
@@ -93,8 +102,7 @@ class TopScreen extends GUIConfig{
     
     JButton   NextButton5 = new JButton("トップへ"),
               BackButton5 = new JButton("戻る");
-    
-    public TopScreen()throws IOException{
+    public TopScreen()throws Exception,InterruptedException{
         addWindowListener(this);
         setTitle("(´・ω・｀) by 情報電子科3年生！！");
         setLocation(0,0);
@@ -139,6 +147,25 @@ class TopScreen extends GUIConfig{
         third2_2.add(label);
         third2_2.add(NextButton3,"East");
         NextButton3.addActionListener(this);
+         if(debug==false){
+            if(webcam!=null){
+                WebcamPanel webpanel = new WebcamPanel(webcam);
+                webcam.setViewSize(WebcamResolution.VGA.getSize());
+                webpanel.setFPSDisplayed(true);
+                webpanel.setDisplayDebugInfo(true);
+                webpanel.setImageSizeDisplayed(true);
+                webpanel.setMirrored(true);
+                third.add(webpanel);
+            }
+            else{
+                flag=true;
+                System.out.println("true");
+                new Exception2nd();
+            }
+        }else{
+            third.add(new JLabel("デバックにつき無効化"));
+            System.out.println("デバッグモードが有効になっています。");
+        }
         /*
         写真を取得する処理
         */
@@ -148,6 +175,10 @@ class TopScreen extends GUIConfig{
         forth.setLayout(new BorderLayout());
         forth.add(forth2_2,"South");
         forth.add(forth2_1);
+        forth.add(Drawing_left,"West");
+        Drawing_left.setBackground(Color.LIGHT_GRAY);
+        forth.add(Drawing_right,"East");
+        Drawing_right.setBackground(Color.LIGHT_GRAY);
         forth2_2.setLayout(new BorderLayout());
         forth2_1.add(Announcetext4);
         forth2_2.setBackground(Color.LIGHT_GRAY);
@@ -155,8 +186,13 @@ class TopScreen extends GUIConfig{
         BackButton4.addActionListener(this);
         forth2_2.add(label);
         forth2_2.add(NextButton4,"East");
+        forth2_2.add(Drawing_down,"South");
+        Drawing_down.setLayout(new BorderLayout());
+        CTool.setSize(600,600);
+        Drawing_down.add(CTool);
+        CTool.getSelectionModel().addChangeListener(this);
         NextButton4.addActionListener(this);
-        forth.add(new JLabel("絵画領域"));
+        //forth.add(new JLabel("絵画領域"));
         
         /*
         絵を描くための処理
@@ -172,16 +208,7 @@ class TopScreen extends GUIConfig{
         fifth2_2.add(BackButton5,"East");
         BackButton5.addActionListener(this);
         fifth2_2.add(label);
-        try{
-	webcam.setViewSize(WebcamResolution.VGA.getSize());
-        webpanel.setFPSDisplayed(true);
-	webpanel.setDisplayDebugInfo(true);
-	webpanel.setImageSizeDisplayed(true);
-	webpanel.setMirrored(true);
-        fifth2_2.add(webpanel);
-        }catch(Exception e){
-                System.out.println("カメラが存在しませんでした。接続を確認してください・");
-        }
+        
         fifth2_2.add(NextButton5,"West");
         NextButton5.addActionListener(this);
         
@@ -190,7 +217,7 @@ class TopScreen extends GUIConfig{
         
         
         add(tabbedpane);
-        setVisible(true);
+        if(debug==true)if(flag==false)setVisible(true);
         
         
         
@@ -209,5 +236,10 @@ class TopScreen extends GUIConfig{
         if(arg0.getSource() == BackButton4) tabbedpane.setSelectedIndex(2);
         if(arg0.getSource() == NextButton5) tabbedpane.setSelectedIndex(0);
         if(arg0.getSource() == BackButton5) tabbedpane.setSelectedIndex(3);
+    }
+    public void stateChanged(ChangeEvent e) {
+	color = CTool.getColor();
+        System.out.println(e+"  "+color);
+	//mpc.setColor(color);
     }
 }
