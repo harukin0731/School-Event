@@ -40,7 +40,7 @@ class おえかき画面 extends GUIConfig{
         setVisible(true);
     }
 }
-class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeListener {
+class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeListener,MouseListener,MouseInputListener {
     public void windowClosing(WindowEvent arg0) {dispose();}
     public void windowActivated(WindowEvent arg0){}
     public void windowClosed(WindowEvent arg0){}
@@ -50,6 +50,15 @@ class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeLi
     public void windowOpened(WindowEvent arg0){}
     public void actionPerformed(ActionEvent arg0){}
     public void stateChanged(ChangeEvent e) {}
+    public void mouseClicked(MouseEvent e){}
+    public void mouseEntered(MouseEvent e){}
+    public void mouseExited(MouseEvent e){}
+    public void mousePressed(MouseEvent e){}
+    public void mouseReleased(MouseEvent e){}
+    public void mouseDragged(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {}
+
+
 }
 
 

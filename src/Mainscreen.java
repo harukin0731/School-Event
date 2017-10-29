@@ -9,11 +9,11 @@ import java.awt.image.*;
 import javax.imageio.*;
 
 //お絵かき
-import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.MouseInputListener;
+import java.awt.geom.*;
+import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.event.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -31,7 +31,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 class TopScreen extends GUIConfig {
     
-    boolean debug=true;
+    boolean debug=false;
     
     JTabbedPane tabbedpane = new JTabbedPane();
     Color color;
@@ -70,11 +70,14 @@ class TopScreen extends GUIConfig {
               thirdlabel     = new JLabel("右のボタンを押して撮影を開始してください。");
     
     JButton   NextButton3 = new JButton("次へ"),
-              BackButton3 = new JButton("戻る");
+              BackButton3 = new JButton("戻る"),
+              Capture     = new JButton("撮影！");
     
     WebcamPanel webpanel;
     Webcam webcam = Webcam.getDefault();
     boolean flag;
+    
+    
     
     //四段階目のGUI
     JPanel  forth    = new JPanel(),
@@ -82,13 +85,16 @@ class TopScreen extends GUIConfig {
             forth2_2 = new JPanel(),
             Drawing_right = new JPanel(),
             Drawing_left  = new JPanel(),
-            Drawing_down  = new JPanel();
+            Drawing_down  = new JPanel(),
+            Drawing_down2 = new JPanel();
     
     JLabel  Announcetext4  = new JLabel("お絵かきをします。"),
-            forthlabel     = new JLabel();
+            forthlabel     = new JLabel("今の色"+color);
     
     JButton NextButton4 = new JButton("次へ"),
             BackButton4 = new JButton("戻る");
+    
+    BufferedImage image;
     
     JColorChooser CTool = new JColorChooser();
    
@@ -147,10 +153,12 @@ class TopScreen extends GUIConfig {
         third2_2.add(label);
         third2_2.add(NextButton3,"East");
         NextButton3.addActionListener(this);
+        third2_2.add(Capture,"North");
+        Capture.addActionListener(this);
          if(debug==false){
             if(webcam!=null){
-                WebcamPanel webpanel = new WebcamPanel(webcam);
                 webcam.setViewSize(WebcamResolution.VGA.getSize());
+                WebcamPanel webpanel = new WebcamPanel(webcam);
                 webpanel.setFPSDisplayed(true);
                 webpanel.setDisplayDebugInfo(true);
                 webpanel.setImageSizeDisplayed(true);
@@ -173,23 +181,28 @@ class TopScreen extends GUIConfig {
         //４枚目
         tabbedpane.addTab("お絵かき",add(forth));
         forth.setLayout(new BorderLayout());
+        forth.addMouseListener(this);
         forth.add(forth2_2,"South");
         forth.add(forth2_1);
         forth.add(Drawing_left,"West");
+        Drawing_left.setLayout(new FlowLayout());
         Drawing_left.setBackground(Color.LIGHT_GRAY);
         forth.add(Drawing_right,"East");
+        Drawing_right.setLayout(new GridLayout());
         Drawing_right.setBackground(Color.LIGHT_GRAY);
         forth2_2.setLayout(new BorderLayout());
         forth2_1.add(Announcetext4);
+        forth2_1.add(forthlabel,"North");
         forth2_2.setBackground(Color.LIGHT_GRAY);
         forth2_2.add(BackButton4,"West");
+        forth2_2.add(Drawing_down,"North");
         BackButton4.addActionListener(this);
         forth2_2.add(label);
         forth2_2.add(NextButton4,"East");
-        forth2_2.add(Drawing_down,"South");
         Drawing_down.setLayout(new BorderLayout());
-        CTool.setSize(600,600);
-        Drawing_down.add(CTool);
+        Drawing_down.setSize(100,100);
+        Drawing_down.add(CTool,"East");
+        Drawing_down.add(Drawing_down2,"West");
         CTool.getSelectionModel().addChangeListener(this);
         NextButton4.addActionListener(this);
         //forth.add(new JLabel("絵画領域"));
@@ -217,7 +230,7 @@ class TopScreen extends GUIConfig {
         
         
         add(tabbedpane);
-        if(debug==true)if(flag==false)setVisible(true);
+        if(debug==true||flag==false)setVisible(true);
         
         
         
@@ -236,10 +249,30 @@ class TopScreen extends GUIConfig {
         if(arg0.getSource() == BackButton4) tabbedpane.setSelectedIndex(2);
         if(arg0.getSource() == NextButton5) tabbedpane.setSelectedIndex(0);
         if(arg0.getSource() == BackButton5) tabbedpane.setSelectedIndex(3);
+        if(arg0.getSource() == Capture){
+            Calendar calender = Calendar.getInstance();
+            image = webcam.getImage();
+            try {
+                ImageIO.write(image, "PNG", new File("../rawpicture",calender.get(Calendar.HOUR_OF_DAY)+"-"+calender.get(Calendar.MINUTE)+"-"+calender.get(Calendar.SECOND)));
+            } catch (IOException ex) {
+                new File("../rawpicture").mkdir();
+                System.err.println("err");
+            }
+        }
+    }
+    public void windowClosing(WindowEvent arg0) {
+        dispose();
+        System.exit(0);
     }
     public void stateChanged(ChangeEvent e) {
 	color = CTool.getColor();
         System.out.println(e+"  "+color);
+        repaint();
 	//mpc.setColor(color);
     }
+     public void mouseClicked(MouseEvent e){
+    Point point = e.getPoint();
+    System.out.println("x:" + point.x + ",y:" + point.y);
+  }
+  
 }
