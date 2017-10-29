@@ -251,13 +251,18 @@ class TopScreen extends GUIConfig {
         if(arg0.getSource() == BackButton5) tabbedpane.setSelectedIndex(3);
         if(arg0.getSource() == Capture){
             Calendar calender = Calendar.getInstance();
+            String no = "capture:"+calender.get(Calendar.HOUR_OF_DAY)+":"+calender.get(Calendar.MINUTE)+":"+calender.get(Calendar.SECOND);
+            File select = null;
             image = webcam.getImage();
+            if(new File(new File("./").getParent(), "rawpicture").canRead() == false){
+                new File(new File("./").getParent(), "rawpicture").mkdir();
+            }
             try {
-                ImageIO.write(image, "PNG", new File("../rawpicture",calender.get(Calendar.HOUR_OF_DAY)+"-"+calender.get(Calendar.MINUTE)+"-"+calender.get(Calendar.SECOND)));
+                ImageIO.write(image, "PNG", select = new File("./rawpicture",no));
             } catch (IOException ex) {
-                new File("../rawpicture").mkdir();
                 System.err.println("err");
             }
+            System.out.println(select.getPath());
         }
     }
     public void windowClosing(WindowEvent arg0) {
