@@ -57,8 +57,7 @@ class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeLi
     public void mouseReleased(MouseEvent e){}
     public void mouseDragged(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {}
-
-
+    public void paintComponent(Graphics g) {}
 }
 
 

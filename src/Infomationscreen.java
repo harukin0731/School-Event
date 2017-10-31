@@ -46,6 +46,7 @@ class Informationscreen extends GUIConfig{
         Close.add(close);
     }
     ///オーバーライドぉぉ
+    @Override
     public void actionPerformed(ActionEvent arg0){
         if(arg0.getSource()==close){
             dispose();

@@ -97,6 +97,9 @@ class TopScreen extends GUIConfig {
     BufferedImage image;
     
     JColorChooser CTool = new JColorChooser();
+    GPanel p = new GPanel();
+    
+    
    
     //五段階目のGUI
     JPanel fifth = new JPanel(),
@@ -191,8 +194,9 @@ class TopScreen extends GUIConfig {
         Drawing_right.setLayout(new GridLayout());
         Drawing_right.setBackground(Color.LIGHT_GRAY);
         forth2_2.setLayout(new BorderLayout());
-        forth2_1.add(Announcetext4);
-        forth2_1.add(forthlabel,"North");
+        forth.add(p, BorderLayout.CENTER);
+        /*forth2_1.add(Announcetext4);
+        forth2_1.add(forthlabel,"North");*/
         forth2_2.setBackground(Color.LIGHT_GRAY);
         forth2_2.add(BackButton4,"West");
         forth2_2.add(Drawing_down,"North");
@@ -243,7 +247,10 @@ class TopScreen extends GUIConfig {
         if(arg0.getSource() == StartButton) tabbedpane.setSelectedIndex(1);
         if(arg0.getSource() == NextButton2) tabbedpane.setSelectedIndex(2);
         if(arg0.getSource() == BackButton2) tabbedpane.setSelectedIndex(0);
-        if(arg0.getSource() == NextButton3) tabbedpane.setSelectedIndex(3);
+        if(arg0.getSource() == NextButton3) {
+            tabbedpane.setSelectedIndex(3);
+            
+        }
         if(arg0.getSource() == BackButton3) tabbedpane.setSelectedIndex(1);
         if(arg0.getSource() == NextButton4) tabbedpane.setSelectedIndex(4);
         if(arg0.getSource() == BackButton4) tabbedpane.setSelectedIndex(2);
@@ -251,7 +258,7 @@ class TopScreen extends GUIConfig {
         if(arg0.getSource() == BackButton5) tabbedpane.setSelectedIndex(3);
         if(arg0.getSource() == Capture){
             Calendar calender = Calendar.getInstance();
-            String no = "capture:"+calender.get(Calendar.HOUR_OF_DAY)+":"+calender.get(Calendar.MINUTE)+":"+calender.get(Calendar.SECOND);
+            String no = "capture:"+calender.get(Calendar.HOUR_OF_DAY)+":"+calender.get(Calendar.MINUTE)+":"+calender.get(Calendar.SECOND)+".png";
             File select = null;
             image = webcam.getImage();
             if(new File(new File("./").getParent(), "rawpicture").canRead() == false){
@@ -263,21 +270,50 @@ class TopScreen extends GUIConfig {
                 System.err.println("err");
             }
             System.out.println(select.getPath());
+            p.img = "./rawpicture/"+no;
         }
     }
+    @Override
     public void windowClosing(WindowEvent arg0) {
         dispose();
         System.exit(0);
     }
+    @Override
     public void stateChanged(ChangeEvent e) {
 	color = CTool.getColor();
         System.out.println(e+"  "+color);
         repaint();
 	//mpc.setColor(color);
     }
+    @Override
      public void mouseClicked(MouseEvent e){
     Point point = e.getPoint();
     System.out.println("x:" + point.x + ",y:" + point.y);
   }
   
+}
+
+
+class GPanel extends JPanel {
+    String img = null;
+    BufferedImage image =null;
+    
+  @Override
+  public void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D)g;
+    int w = this.getWidth();
+    int h = this.getHeight();
+    try{
+        image = ImageIO.read(new File(img));
+    }catch(Exception e){
+        System.out.println("err");
+    }
+    g2.drawImage(image, 10, 10, this);
+    for(int i = 0;i < 10;i++){
+      Ellipse2D shape = new Ellipse2D.Double(0,0,w,h - i * (w / 10));
+      g2.setPaint(new Color(0,0,255,25));
+      g2.fill(shape);
+    }
+  }
 }
