@@ -20,7 +20,7 @@ public class MainApp {
      */
     public static void main(String[] args) throws IOException{
         try {
-            new TopScreen();
+            TopScreen e = new TopScreen();
             //new GUIConfigsss();
         } catch (Exception ex) {
             Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);

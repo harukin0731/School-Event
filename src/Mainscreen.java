@@ -1,5 +1,6 @@
 
 import com.github.sarxos.webcam.*;
+import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -184,7 +185,6 @@ class TopScreen extends GUIConfig {
         //４枚目
         tabbedpane.addTab("お絵かき",add(forth));
         forth.setLayout(new BorderLayout());
-        forth.addMouseListener(this);
         forth.add(forth2_2,"South");
         forth.add(forth2_1);
         forth.add(Drawing_left,"West");
@@ -205,7 +205,7 @@ class TopScreen extends GUIConfig {
         forth2_2.add(NextButton4,"East");
         Drawing_down.setLayout(new BorderLayout());
         Drawing_down.setSize(100,100);
-        Drawing_down.add(CTool,"East");
+        Drawing_right.add(CTool,"East");
         Drawing_down.add(Drawing_down2,"West");
         CTool.getSelectionModel().addChangeListener(this);
         NextButton4.addActionListener(this);
@@ -247,10 +247,7 @@ class TopScreen extends GUIConfig {
         if(arg0.getSource() == StartButton) tabbedpane.setSelectedIndex(1);
         if(arg0.getSource() == NextButton2) tabbedpane.setSelectedIndex(2);
         if(arg0.getSource() == BackButton2) tabbedpane.setSelectedIndex(0);
-        if(arg0.getSource() == NextButton3) {
-            tabbedpane.setSelectedIndex(3);
-            
-        }
+        if(arg0.getSource() == NextButton3) tabbedpane.setSelectedIndex(3);
         if(arg0.getSource() == BackButton3) tabbedpane.setSelectedIndex(1);
         if(arg0.getSource() == NextButton4) tabbedpane.setSelectedIndex(4);
         if(arg0.getSource() == BackButton4) tabbedpane.setSelectedIndex(2);
@@ -271,6 +268,7 @@ class TopScreen extends GUIConfig {
             }
             System.out.println(select.getPath());
             p.img = "./rawpicture/"+no;
+            p.a=true;
         }
     }
     @Override
@@ -280,40 +278,92 @@ class TopScreen extends GUIConfig {
     }
     @Override
     public void stateChanged(ChangeEvent e) {
-	color = CTool.getColor();
+	p.color = CTool.getColor();
         System.out.println(e+"  "+color);
-        repaint();
+        //p.repaint();
 	//mpc.setColor(color);
     }
     @Override
-     public void mouseClicked(MouseEvent e){
-    Point point = e.getPoint();
-    System.out.println("x:" + point.x + ",y:" + point.y);
-  }
+    public void mouseClicked(MouseEvent e){
+        Point point = e.getPoint();
+        System.out.println("x:" + point.x + ",y:" + point.y);
+        /*p.x1 = p.x2 = e.getX();
+        p.y1 = p.y2 = e.getY();
+        p.paintComponent(getGraphics());*/
+    }
+      String img2 = null;
+    BufferedImage image2 =null;
+    
+  
   
 }
 
 
-class GPanel extends JPanel {
+class GPanel   extends GraphicConfig {
     String img = null;
     BufferedImage image =null;
-    
-  @Override
-  public void paintComponent(Graphics g) {
-    super.paintComponent(g);
-    Graphics2D g2 = (Graphics2D)g;
+    int x1=0,y1=0;
+    int x2,y2;
     int w = this.getWidth();
     int h = this.getHeight();
+    int left = this.getX();
+    int top = this.getY();
+    int size = 10;
+    boolean a=false;
+    Color color = new Color(0,0,0,255);
+    GPanel(){
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        
+    }
+  public void paintComponent(Graphics g) {
+    //super.paintComponent(g);
+    Graphics2D g2 = (Graphics2D)g;
+    
     try{
         image = ImageIO.read(new File(img));
     }catch(Exception e){
         System.out.println("err");
     }
-    g2.drawImage(image, 10, 10, this);
-    for(int i = 0;i < 10;i++){
-      Ellipse2D shape = new Ellipse2D.Double(0,0,w,h - i * (w / 10));
-      g2.setPaint(new Color(0,0,255,25));
-      g2.fill(shape);
+    if(a==true){
+        g2.drawImage(image, this.left, this.top, this);
+        a=false;
     }
+    //for(int i = 0;i < 10;i++){
+      g2.setPaint(color);
+      //g2.fill(s);
+    //}
+      //g2.fill(new Ellipse2D.Int(x1-5,y1-5,x1+5,y1+5));
+      //g2.drawOval(x1-5, y1-5, 10, 10);
+      //g2.drawRect(x1-5, y1-5, 10, 10);
+      g2.drawLine(x1,y1,x2,y2); 
+      
+      System.out.println("描画しました w="+w+" h="+h+" left="+left+" top="+top);
   }
+  public void mousePushed(MouseEvent e){
+        Point point = e.getPoint();
+        System.out.println("x:" + point.x + ",y:" + point.y);
+        x1 = x2 = e.getX();
+        y1 = y2 = e.getY();
+        System.out.println(x1+" "+x2+" "+y1+" "+y2);
+        paintComponent(getGraphics());
+    }
+  public void mouseDragged(MouseEvent e){
+        Point point = e.getPoint();
+        System.out.println("x:" + point.x + ",y:" + point.y);
+        //x1 = x2 = e.getX();
+        //y1 = y2 = e.getY();
+        x2 = e.getX();
+        y2 = e.getY();
+        paintComponent(getGraphics());
+
+        x1 = e.getX();    // これが新たな始点になる
+        y1 = e.getY();
+        System.out.println(x1+" "+x2+" "+y1+" "+y2);
+    }
+  public void mouseMoved(MouseEvent e){
+        x1 = e.getX();    // これが新たな始点になる
+        y1 = e.getY();
+  }
+
 }

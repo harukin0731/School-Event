@@ -9,6 +9,7 @@
  * @author harukin
  */
 
+import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.Window.*;
@@ -59,7 +60,15 @@ class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeLi
     public void mouseMoved(MouseEvent e) {}
     public void paintComponent(Graphics g) {}
 }
-
+class GraphicConfig   extends JPanel implements MouseListener,MouseMotionListener{
+    public void mouseClicked(MouseEvent e){}
+    public void mousePressed(MouseEvent e){}
+    public void mouseReleased(MouseEvent e){}
+    public void mouseEntered(MouseEvent e){}
+    public void mouseExited(MouseEvent e){}
+    public void mouseDragged(MouseEvent e){}
+    public void mouseMoved(MouseEvent e){}
+}
 
 
 /*class GUIConfigsss extends Frame implements WindowListener,ActionListener {
