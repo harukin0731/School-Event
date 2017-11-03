@@ -19,6 +19,7 @@ import javax.swing.*;
 import java.util.logging.*;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
+import java.awt.print.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
@@ -41,7 +42,7 @@ class おえかき画面 extends GUIConfig{
         setVisible(true);
     }
 }
-class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeListener,MouseListener,MouseInputListener {
+class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeListener,MouseListener,MouseInputListener,Printable  {
     public void windowClosing(WindowEvent arg0) {dispose();}
     public void windowActivated(WindowEvent arg0){}
     public void windowClosed(WindowEvent arg0){}
@@ -59,8 +60,11 @@ class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeLi
     public void mouseDragged(MouseEvent e) {}
     public void mouseMoved(MouseEvent e) {}
     public void paintComponent(Graphics g) {}
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
-class GraphicConfig   extends JPanel implements MouseListener,MouseMotionListener{
+class GraphicConfig   extends JPanel implements MouseListener,MouseMotionListener,Printable{
     public void mouseClicked(MouseEvent e){}
     public void mousePressed(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
@@ -68,6 +72,9 @@ class GraphicConfig   extends JPanel implements MouseListener,MouseMotionListene
     public void mouseExited(MouseEvent e){}
     public void mouseDragged(MouseEvent e){}
     public void mouseMoved(MouseEvent e){}
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
 
 
