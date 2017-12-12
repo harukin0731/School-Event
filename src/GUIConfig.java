@@ -43,6 +43,7 @@ class おえかき画面 extends GUIConfig{
     }
 }
 class GUIConfig extends JFrame implements WindowListener,ActionListener,ChangeListener,MouseListener,MouseInputListener,Printable  {
+    String dirnom = System.getProperty("file.separator");
     public void windowClosing(WindowEvent arg0) {dispose();}
     public void windowActivated(WindowEvent arg0){}
     public void windowClosed(WindowEvent arg0){}

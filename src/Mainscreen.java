@@ -285,16 +285,16 @@ class TopScreen extends GUIConfig {
             String no = "capture:"+calender.get(Calendar.HOUR_OF_DAY)+":"+calender.get(Calendar.MINUTE)+":"+calender.get(Calendar.SECOND)+".png";
             File select = null;
             image = webcam.getImage();
-            if(new File(new File("./").getParent(), "rawpicture").canRead() == false){
-                new File(new File("./").getParent(), "rawpicture").mkdir();
+            if(new File(new File("."+dirnom).getParent(), "rawpicture").canRead() == false){
+                new File(new File("."+dirnom).getParent(), "rawpicture").mkdir();
             }
             try {
-                ImageIO.write(image, "PNG", select = new File("./rawpicture",no));
+                ImageIO.write(image, "PNG", select = new File("."+dirnom+"rawpicture",no));
             } catch (IOException ex) {
                 System.err.println("err");
             }
             System.out.println(select.getPath());
-            p.img = "./rawpicture/"+no;
+            p.img = "."+dirnom+"rawpicture"+dirnom+no;
             p.a=true;
         }
         if(arg0.getSource() == stam1){
@@ -390,20 +390,20 @@ class TopScreen extends GUIConfig {
             stamps2 = new JPanel(),
             stamps3 = new JPanel();
 
-    String test1_label = "./Stamp/百錬鉄.png",
-           test2_label = "./Stamp/百錬館看板.png",
-           atumori_label_ = "./Stamp/Twitter/matsukou.png",
-           atumori_label0 = "./Stamp/Twitter/atsumori.png",
-           atumori_label1 = "./Stamp/Twitter/denki.png",
-           atumori_label2 = "./Stamp/Twitter/densi.png",
-           atumori_label3 = "./Stamp/Twitter/doboku.png",
-           atumori_label4 = "./Stamp/Twitter/joho.png",
-           atumori_label5 = "./Stamp/Twitter/kenchiku.png",
-           atumori_label6 = "./Stamp/Twitter/kikai.png",
-           atumori_label7 = "./Stamp/Twitter/kouka.png",
-           atumori_label8 = "./Stamp/Twitter/seni.png",
-            atamano = "./Stamp/Twitter/atamanowaruihito.png",
-            newschool_label = "./Stamp/新校舎.png";
+    String test1_label = "."+dirnom+"Stamp"+dirnom+"百錬鉄.png",
+           test2_label = "."+dirnom+"Stamp"+dirnom+"百錬館看板.png",
+           atumori_label_ = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"matsukou.png",
+           atumori_label0 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"atsumori.png",
+           atumori_label1 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"denki.png",
+           atumori_label2 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"densi.png",
+           atumori_label3 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"doboku.png",
+           atumori_label4 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"joho.png",
+           atumori_label5 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"kenchiku.png",
+           atumori_label6 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"kikai.png",
+           atumori_label7 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"kouka.png",
+           atumori_label8 = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"seni.png",
+            atamano = "."+dirnom+"Stamp"+dirnom+"Twitter"+dirnom+"atamanowaruihito.png",
+            newschool_label = "."+dirnom+"Stamp"+dirnom+"新校舎.png";
     ImageIcon test1 = new ImageIcon(test1_label),
             test2 = new ImageIcon(test2_label),
             atumori_ = new ImageIcon(atumori_label_),
